@@ -1,0 +1,20 @@
+# Fila do IndexNow (indexnow.mjs): o Bing recusa o IP da Cloudflare; daqui a fila sai de outro IP.
+name: Fila do IndexNow
+on:
+  schedule:
+    - cron: '26 1,7,13,19 * * *'
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      METRICAS_TOKEN: ${{ secrets.METRICAS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node indexnow.mjs

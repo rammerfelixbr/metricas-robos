@@ -1,0 +1,136 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "acoes",
+    "corrigido",
+    "descartes",
+    "ignorado",
+    "para_o_rammer",
+    "publicado",
+    "resumo",
+    "titulos"
+  ],
+  "properties": {
+    "acoes": {
+      "type": "array",
+      "description": "Uma entrada por ação de Inteligência recebida (mesmo id). feita = aplicada e publicada; nao_deu = não dá para aplicar neste projeto (diga por quê); adiada = não coube nesta rodada.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "resultado",
+          "nota"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "resultado": {
+            "type": "string",
+            "enum": [
+              "feita",
+              "nao_deu",
+              "adiada"
+            ]
+          },
+          "nota": {
+            "type": "string",
+            "description": "O que foi feito (arquivos/páginas) ou por que não deu."
+          }
+        }
+      }
+    },
+    "corrigido": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Uma frase por correção feita E publicada (ou commitada, se o projeto publica no push)."
+    },
+    "para_o_rammer": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "O que precisa dele: decisão, senha, endereço certo, robô parado."
+    },
+    "ignorado": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Pendência que não é problema (falso positivo), com o motivo."
+    },
+    "publicado": {
+      "type": "boolean",
+      "description": "true se a correção já está no ar (ou no main, quando a hospedagem publica no push)."
+    },
+    "resumo": {
+      "type": "string"
+    },
+    "descartes": {
+      "type": "array",
+      "description": "Falsos positivos CONFIRMADOS, para o painel fechar sozinho. tipo=link: link externo que o painel diz quebrado/sem resposta mas que respondeu 200 para você (WebFetch/curl). tipo=pagina_curta: página curta de propósito (listagem, índice, glossário, política, autor), que não deve ganhar texto.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tipo",
+          "url",
+          "motivo"
+        ],
+        "properties": {
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "link",
+              "pagina_curta"
+            ]
+          },
+          "url": {
+            "type": "string"
+          },
+          "motivo": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "titulos": {
+      "type": "array",
+      "description": "Uma entrada por item de 'titulos.aplicar' e 'titulos.reverter' recebido (mesmo id). feita = título/descrição trocados no arquivo e publicados; nao_deu = não achou a página ou a regra do projeto impede (diga por quê); adiada = não coube.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "resultado",
+          "arquivo",
+          "nota"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "resultado": {
+            "type": "string",
+            "enum": [
+              "feita",
+              "nao_deu",
+              "adiada"
+            ]
+          },
+          "arquivo": {
+            "type": "string",
+            "description": "Caminho do arquivo editado (relativo à pasta do projeto); vazio se não editou."
+          },
+          "nota": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

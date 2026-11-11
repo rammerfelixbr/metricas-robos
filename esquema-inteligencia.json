@@ -1,0 +1,126 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "hipoteses",
+    "resumo",
+    "titulos"
+  ],
+  "properties": {
+    "resumo": {
+      "type": "string",
+      "description": "Duas ou três frases: o que mais chamou atenção na comparação desta semana."
+    },
+    "hipoteses": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "titulo",
+          "evidencia",
+          "confianca",
+          "origem_projeto",
+          "alvo_projeto",
+          "acao",
+          "tipo",
+          "metrica"
+        ],
+        "properties": {
+          "titulo": {
+            "type": "string",
+            "description": "A hipótese em uma frase curta, estável (serve para não repetir na semana seguinte)."
+          },
+          "evidencia": {
+            "type": "string",
+            "description": "Os números que sustentam, com projeto e período. Só o que veio nos dados."
+          },
+          "confianca": {
+            "type": "string",
+            "enum": [
+              "alta",
+              "media",
+              "baixa"
+            ]
+          },
+          "origem_projeto": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "id do projeto onde isso funciona; null se é observação geral."
+          },
+          "alvo_projeto": {
+            "type": "string",
+            "description": "id do projeto onde aplicar."
+          },
+          "acao": {
+            "type": "string",
+            "description": "O que fazer no projeto-alvo, concreto o bastante para o robô de revisão executar na pasta dele."
+          },
+          "tipo": {
+            "type": "string",
+            "enum": [
+              "mecanica",
+              "estrategica"
+            ]
+          },
+          "metrica": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "visitas_28",
+              "busca_cliques_28",
+              "ctr_28",
+              "posicao_28",
+              "afiliado_28",
+              null
+            ],
+            "description": "O que deve melhorar em 28 dias se a hipótese estiver certa."
+          }
+        }
+      }
+    },
+    "titulos": {
+      "type": "array",
+      "maxItems": 40,
+      "description": "Uma variante de título (e descrição) por página de 'titulos_candidatos' de cada projeto. Vazia se não há candidatas.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "projeto",
+          "url",
+          "titulo",
+          "descricao",
+          "por_que"
+        ],
+        "properties": {
+          "projeto": {
+            "type": "string",
+            "description": "id do projeto"
+          },
+          "url": {
+            "type": "string",
+            "description": "a URL exata da candidata"
+          },
+          "titulo": {
+            "type": "string",
+            "description": "título novo, 20 a 65 caracteres, honesto, sem isca"
+          },
+          "descricao": {
+            "type": "string",
+            "description": "meta description nova, 50 a 160 caracteres"
+          },
+          "por_que": {
+            "type": "string",
+            "description": "a hipótese em uma frase: o que muda na abordagem e por que deve atrair mais clique"
+          }
+        }
+      }
+    }
+  }
+}

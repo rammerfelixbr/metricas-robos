@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["resumo", "pautas"],
+  "properties": {
+    "resumo": { "type": "string", "description": "Duas frases: o que está em alta hoje e por que entrou (ou não) pauta em cada projeto." },
+    "pautas": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["projeto", "pauta", "busca_alvo", "cluster", "estagio", "trilha", "fonte", "fonte_url", "por_que"],
+        "properties": {
+          "projeto": { "type": "string", "description": "id do projeto" },
+          "pauta": { "type": "string", "description": "A pauta como vai para o pautas.md: a busca-alvo em palavras, concreta, até 90 caracteres." },
+          "busca_alvo": { "type": "string", "description": "A consulta que o post mira (cauda longa)." },
+          "cluster": { "type": "string", "description": "Cluster do projeto (como no pautas.md dele); vazio se o projeto não usa." },
+          "estagio": { "type": "string", "enum": ["tofu", "mofu", "bofu", ""] },
+          "trilha": { "type": "string", "description": "Só para a VK: nicho | produto. Vazio nos outros." },
+          "fonte": { "type": "string", "enum": ["trends", "noticias", "search-console", "outra"] },
+          "fonte_url": { "type": "string", "description": "URL da notícia ou do item de tendência que prova que está em alta." },
+          "por_que": { "type": "string", "description": "Por que está em alta HOJE e por que cabe no território deste projeto. Uma ou duas frases." }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+# Radar de pautas em alta (radar.mjs): uma vez por dia, com retentativa. A marca do dia e as pautas enfileiradas ficam
+# neste repositório (ultimo-radar.txt, radar-enfileiradas.json), para a passagem seguinte saber o que já foi feito.
+name: Radar de pautas
+on:
+  schedule:
+    - cron: '11 12 * * *'
+    - cron: '11 15 * * *'
+  workflow_dispatch: {}
+concurrency:
+  group: radar
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  radar:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Sao_Paulo
+      METRICAS_TOKEN: ${{ secrets.METRICAS_TOKEN }}
+      GH_TOKEN: ${{ secrets.ROBOS_GITHUB_TOKEN }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      CLAUDE_CODE_OAUTH_TOKEN_2: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN_2 }}
+      CLAUDE_CODE_OAUTH_TOKEN_3: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN_3 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install -g @anthropic-ai/claude-code
+      - run: git config --global user.name "Métricas" && git config --global user.email "metricas@rodasozinho.com.br"
+      - run: node radar.mjs
+      - name: Guardar a marca do dia
+        if: always()
+        run: |
+          git add ultimo-radar.txt radar-enfileiradas.json 2>/dev/null || true
+          git diff --cached --quiet || { git commit -q -m "radar: marca do dia" && git pull -q --rebase && git push -q; }

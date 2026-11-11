@@ -1,0 +1,31 @@
+# Inteligência semanal (inteligencia.mjs): segunda 08:50 e retentativas até dar certo na semana (o painel diz se já deu).
+name: Inteligência semanal
+on:
+  schedule:
+    - cron: '51 11 * * 1'
+    - cron: '51 15 * * 1-4'
+  workflow_dispatch: {}
+concurrency:
+  group: inteligencia
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  inteligencia:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Sao_Paulo
+      METRICAS_TOKEN: ${{ secrets.METRICAS_TOKEN }}
+      GH_TOKEN: ${{ secrets.ROBOS_GITHUB_TOKEN }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      CLAUDE_CODE_OAUTH_TOKEN_2: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN_2 }}
+      CLAUDE_CODE_OAUTH_TOKEN_3: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN_3 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install -g @anthropic-ai/claude-code
+      - run: git config --global user.name "Métricas" && git config --global user.email "metricas@rodasozinho.com.br"
+      - run: node inteligencia.mjs

@@ -1,0 +1,33 @@
+# Revisão automática diária (revisar.mjs): corrige o que é mecânico em cada site e devolve ao painel. Roda aqui desde
+# 11/11/2026 para não depender do Mac. A 1ª passagem faz a rodada; as outras só pegam projeto que falhou (o painel lembra).
+name: Revisão automática
+on:
+  schedule:
+    - cron: '41 10 * * *'
+    - cron: '41 13 * * *'
+    - cron: '41 16 * * *'
+  workflow_dispatch: {}
+concurrency:
+  group: revisao
+  cancel-in-progress: false
+permissions:
+  contents: read
+jobs:
+  revisar:
+    timeout-minutes: 150
+    runs-on: ubuntu-latest
+    env:
+      TZ: America/Sao_Paulo
+      METRICAS_TOKEN: ${{ secrets.METRICAS_TOKEN }}
+      GH_TOKEN: ${{ secrets.ROBOS_GITHUB_TOKEN }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      CLAUDE_CODE_OAUTH_TOKEN_2: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN_2 }}
+      CLAUDE_CODE_OAUTH_TOKEN_3: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN_3 }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install -g @anthropic-ai/claude-code
+      - run: git config --global user.name "Métricas" && git config --global user.email "metricas@rodasozinho.com.br"
+      - run: node revisar.mjs

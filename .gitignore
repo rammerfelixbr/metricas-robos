@@ -1,0 +1,12 @@
+# só no Mac
+lock
+lock-*
+*-pendente.txt
+reserva-*.txt
+hora.txt
+leads-quentes-informar.mjs
+# clones dos projetos na nuvem
+trabalho/
+node_modules/
+*.plist
+gravar-segredos.sh
