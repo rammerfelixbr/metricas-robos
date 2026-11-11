@@ -6,7 +6,12 @@ on:
     - cron: '41 10 * * *'
     - cron: '41 13 * * *'
     - cron: '41 16 * * *'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      projeto:
+        description: 'Revisar só este projeto agora (id do painel); vazio = rodada normal'
+        required: false
+        default: ''
 concurrency:
   group: revisao
   cancel-in-progress: false
@@ -30,4 +35,6 @@ jobs:
           node-version: 20
       - run: npm install -g @anthropic-ai/claude-code
       - run: git config --global user.name "Métricas" && git config --global user.email "metricas@rodasozinho.com.br"
-      - run: node revisar.mjs
+      - run: node revisar.mjs $PROJETO
+        env:
+          PROJETO: ${{ inputs.projeto }}
