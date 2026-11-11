@@ -5,7 +5,10 @@ deste repositório (`.github/workflows/`), para não dependerem do Mac. Os token
 (`METRICAS_TOKEN`, `CLAUDE_CODE_OAUTH_TOKEN`, `_2`, `_3`, `ROBOS_GITHUB_TOKEN`); nenhum valor está no código.
 `nuvem.mjs` concentra o que muda na nuvem: token pelo ambiente, projetos clonados de `main` em `trabalho/`, e o painel
 como memória. A reserva dos artigos saiu daqui e roda no painel do Roda Sozinho. O resto deste arquivo descreve cada
-robô como ele era chamado no Mac (launchd), caminho que fica de reserva.
+robô como ele era chamado no Mac (launchd), caminho que fica de reserva. Em 11/11/2026 os quatro agendamentos foram
+tirados do Mac (`launchctl bootout` e plists removidos de `~/Library/LaunchAgents`); os `.plist` continuam nesta pasta,
+fora do git, para religar se um dia precisar. Disparo manual: aba Actions do repositório, ou
+`gh workflow run revisao.yml -R rammerfelixbr/metricas-robos -f projeto=<id>` para um projeto só.
 
 ## Revisão automática diária
 
