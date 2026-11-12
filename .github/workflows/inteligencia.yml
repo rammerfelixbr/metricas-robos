@@ -4,7 +4,12 @@ on:
   schedule:
     - cron: '51 11 * * 1'
     - cron: '51 15 * * 1-4'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      agora:
+        description: 'Rodar agora, mesmo com a rodada da semana já feita'
+        type: boolean
+        default: false
 concurrency:
   group: inteligencia
   cancel-in-progress: false
@@ -28,4 +33,4 @@ jobs:
           node-version: 20
       - run: npm install -g @anthropic-ai/claude-code
       - run: git config --global user.name "Métricas" && git config --global user.email "metricas@rodasozinho.com.br"
-      - run: node inteligencia.mjs
+      - run: node inteligencia.mjs ${{ inputs.agora && '--agora' || '' }}
